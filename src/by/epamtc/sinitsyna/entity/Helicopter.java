@@ -22,9 +22,10 @@ public class Helicopter extends Aircraft implements Cloneable {
 	}
 
 	public Helicopter(String type, int fuelUsagePerKm, int tankCapacity, int currentFuelAmount, int loadCapacity,
-			int maxSpeed, int bladesAmount, int crewAmount, int maxPassengersAmount, LocalDate inserviceDate) {
+			int maxSpeed, int bladesAmount, int crewAmount, int maxPassengersAmount, int maxUnitLoadDeviceAmount,
+			LocalDate inserviceDate) {
 		super(type, fuelUsagePerKm, tankCapacity, currentFuelAmount, loadCapacity, maxSpeed, crewAmount,
-				maxPassengersAmount, inserviceDate);
+				maxPassengersAmount, maxUnitLoadDeviceAmount, inserviceDate);
 		this.bladesAmount = bladesAmount;
 	}
 

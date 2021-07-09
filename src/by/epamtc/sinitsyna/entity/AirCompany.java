@@ -15,7 +15,7 @@ import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AirCompany extends LegalEntity {
 	private static final long serialVersionUID = 1L;
-
+	
 	private List<Aircraft> aircrafts;
 
 	public AirCompany() {

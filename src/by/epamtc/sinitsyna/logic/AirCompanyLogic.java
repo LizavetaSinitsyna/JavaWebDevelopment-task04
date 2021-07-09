@@ -11,12 +11,31 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import by.epamtc.sinitsyna.dao.DAOException;
+import by.epamtc.sinitsyna.dao.DAOProvider;
 import by.epamtc.sinitsyna.entity.AirCompany;
 import by.epamtc.sinitsyna.entity.Aircraft;
 import by.epamtc.sinitsyna.exception.IndexOutOfBoundsException;
+import by.epamtc.sinitsyna.logic.validator.AirCompanyValidator;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AirCompanyLogic {
+	private DAOProvider daoProvider = DAOProvider.getInstance();
+
+	public AirCompany read() throws ServiceException {
+		AirCompany company = null;
+		AirCompanyValidator validator = new AirCompanyValidator();
+		try {
+			company = daoProvider.getLegalEntityDAO().read();
+
+			validator.validate(company);
+
+		} catch (DAOException | InvalidAirCompanyException e) { 
+			throw new ServiceException(e.getMessage(), e);
+		}
+
+		return company;
+	}
 
 	public BigInteger retrieveGeneralLoadCapacity(AirCompany company) {
 		BigInteger result = new BigInteger("0");
@@ -30,7 +49,7 @@ public class AirCompanyLogic {
 
 		while (iterator.hasNext()) {
 			aircraft = iterator.next();
-			result.add(new BigInteger(Integer.toString(aircraft.getLoadCapacity())));
+			result = result.add(new BigInteger(Integer.toString(aircraft.getLoadCapacity())));
 		}
 
 		return result;
@@ -48,7 +67,7 @@ public class AirCompanyLogic {
 
 		while (iterator.hasNext()) {
 			aircraft = iterator.next();
-			result.add(new BigInteger(Integer.toString(aircraft.getMaxPassengersAmount())));
+			result = result.add(new BigInteger(Integer.toString(aircraft.getMaxPassengersAmount())));
 		}
 
 		return result;

@@ -21,6 +21,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 	private int maxSpeed;
 	private int crewAmount;
 	private int maxPassengersAmount;
+	private int maxUnitLoadDeviceAmount;
 	private LocalDate inserviceDate;
 
 	public Aircraft() {
@@ -31,7 +32,8 @@ public class Aircraft implements FlyingMachine, Serializable {
 	}
 
 	public Aircraft(String type, int fuelUsagePerKm, int tankCapacity, int currentFuelAmount, int loadCapacity,
-			int maxSpeed, int crewAmount, int maxPassengersAmount, LocalDate inserviceDate) {
+			int maxSpeed, int crewAmount, int maxPassengersAmount, int maxUnitLoadDeviceAmount,
+			LocalDate inserviceDate) {
 		this.type = type;
 		this.fuelUsagePerKm = fuelUsagePerKm;
 		this.tankCapacity = tankCapacity;
@@ -40,6 +42,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 		this.maxSpeed = maxSpeed;
 		this.crewAmount = crewAmount;
 		this.maxPassengersAmount = maxPassengersAmount;
+		this.maxUnitLoadDeviceAmount = maxUnitLoadDeviceAmount;
 		this.inserviceDate = inserviceDate;
 	}
 
@@ -146,6 +149,14 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return true;
 	}
 
+	public int getMaxUnitLoadDeviceAmount() {
+		return maxUnitLoadDeviceAmount;
+	}
+
+	public void setMaxUnitLoadDeviceAmount(int maxUnitLoadDeviceAmount) {
+		this.maxUnitLoadDeviceAmount = maxUnitLoadDeviceAmount;
+	}
+
 	public LocalDate getInserviceDate() {
 		return inserviceDate;
 	}
@@ -179,6 +190,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 		result = prime * result + loadCapacity;
 		result = prime * result + maxPassengersAmount;
 		result = prime * result + maxSpeed;
+		result = prime * result + maxUnitLoadDeviceAmount;
 		result = prime * result + tankCapacity;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -210,6 +222,8 @@ public class Aircraft implements FlyingMachine, Serializable {
 			return false;
 		if (maxSpeed != other.maxSpeed)
 			return false;
+		if (maxUnitLoadDeviceAmount != other.maxUnitLoadDeviceAmount)
+			return false;
 		if (tankCapacity != other.tankCapacity)
 			return false;
 		if (type == null) {
@@ -225,7 +239,8 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return getClass().getName() + " [type=" + type + ", fuelUsagePerKm=" + fuelUsagePerKm + ", tankCapacity="
 				+ tankCapacity + ", currentFuelAmount=" + currentFuelAmount + ", loadCapacity=" + loadCapacity
 				+ ", maxSpeed=" + maxSpeed + ", crewAmount=" + crewAmount + ", maxPassengersAmount="
-				+ maxPassengersAmount + ", inserviceDate=" + inserviceDate + "]";
+				+ maxPassengersAmount + ", maxUnitLoadDeviceAmount=" + maxUnitLoadDeviceAmount + ", inserviceDate="
+				+ inserviceDate + "]";
 	}
 
 }
