@@ -1,0 +1,10 @@
+AirCompany
+registrationNumber=19834567
+countryOfRegistration=Belarus
+name=Minsk1
+registrationType=LLC
+legalAddress=Minsk
+postAddress=220044, RB, Minsk
+by.epamtc.sinitsyna.entity.Helicopter: type=Bell UH-1 Iroquois, fuelUsagePerHour=32, tankCapacity=840, currentFuelAmount=0, loadCapacity=1760, maxSpeed=238, crewAmount=1, maxPassengersAmount=14, maxUnitLoadDeviceAmount=0, inserviceDate=2019-01-31, bladesAmount=2
+by.epamtc.sinitsyna.entity.Aircraft: type=Boeing-737, fuelUsagePerHour=2600, tankCapacity=26020, currentFuelAmount=13010, loadCapacity=20540, maxSpeed=880, crewAmount=2, maxPassengersAmount=189, maxUnitLoadDeviceAmount=200, inserviceDate=2018-08-27
+by.epamtc.sinitsyna.entity.Aircraft: type=Airbus A320, fuelUsagePerHour=2500, tankCapacity=24210, currentFuelAmount=0, loadCapacity=1660, maxSpeed=871, crewAmount=2, maxPassengersAmount=180, maxUnitLoadDeviceAmount=150, inserviceDate=2020-08-17

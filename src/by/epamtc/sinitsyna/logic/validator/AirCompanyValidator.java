@@ -6,8 +6,8 @@ import java.util.Map;
 
 import by.epamtc.sinitsyna.entity.AirCompany;
 import by.epamtc.sinitsyna.entity.Aircraft;
-import by.epamtc.sinitsyna.logic.InvalidAirCompanyException;
-import by.epamtc.sinitsyna.logic.InvalidFlyingMachineException;
+import by.epamtc.sinitsyna.logic.exception.InvalidAirCompanyException;
+import by.epamtc.sinitsyna.logic.exception.InvalidFlyingMachineException;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AirCompanyValidator {

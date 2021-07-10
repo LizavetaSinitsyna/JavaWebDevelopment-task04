@@ -1,4 +1,4 @@
-package by.epamtc.sinitsyna.exception;
+package by.epamtc.sinitsyna.dao;
 
 public class InvalidFileDataException extends Exception {
 

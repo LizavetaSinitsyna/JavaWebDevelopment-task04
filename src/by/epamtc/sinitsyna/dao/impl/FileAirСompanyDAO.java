@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import by.epamtc.sinitsyna.dao.FileProvider;
+import by.epamtc.sinitsyna.dao.InvalidFileDataException;
 import by.epamtc.sinitsyna.dao.AirCompanyDAO;
 import by.epamtc.sinitsyna.dao.DAOException;
 import by.epamtc.sinitsyna.entity.AirCompany;
 import by.epamtc.sinitsyna.entity.Aircraft;
-import by.epamtc.sinitsyna.exception.InvalidFileDataException;
+import by.epamtc.sinitsyna.logic.FileProvider;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class FileAirСompanyDAO implements AirCompanyDAO {
@@ -40,7 +41,7 @@ public class FileAirСompanyDAO implements AirCompanyDAO {
 
 		try (Scanner scanner = new Scanner(file)) {
 			line = scanner.nextLine();
-			if (!line.equals("AirCompany")) {
+			if (!line.equals(company.getClass().getSimpleName())) {
 				throw new DAOException(new InvalidFileDataException(INVALID_FILE_STRUCTURE_EXCEPTION_MESSAGE));
 
 			}
@@ -57,12 +58,9 @@ public class FileAirСompanyDAO implements AirCompanyDAO {
 			}
 
 			while (scanner.hasNextLine()) {
-				parameters = scanner.nextLine().split("[^a-zA-Z0-9=\\-\\.]\\s?");
+				parameters = scanner.nextLine().split("[^a-zA-Z0-9=\\-\\.\\s]\\s?");
 
 				aircraft = (Aircraft) Class.forName(parameters[0]).getConstructor().newInstance();
-				if (ValidationHelper.isNull(aircraft)) {
-					throw new DAOException(new InvalidFileDataException(INVALID_FILE_STRUCTURE_EXCEPTION_MESSAGE));
-				}
 				fields = retrieveAllClassFieldsExcludingConstants(aircraft.getClass());
 				if (parameters.length - 1 != fields.size()) {
 					throw new DAOException(new InvalidFileDataException(INVALID_FILE_STRUCTURE_EXCEPTION_MESSAGE));
@@ -99,14 +97,18 @@ public class FileAirСompanyDAO implements AirCompanyDAO {
 		String typeName = field.getType().getSimpleName();
 
 		if (ValidationHelper.isNull(fieldTypeMatchers.get(typeName)) || !arg.matches(fieldTypeMatchers.get(typeName))) {
-			throw new DAOException("File doesn't consist correct company data.");
+			throw new DAOException(new InvalidFileDataException(INVALID_FILE_STRUCTURE_EXCEPTION_MESSAGE));
 		}
 		field.setAccessible(true);
 		try {
 			if (typeName.equals("int")) {
 				field.set(object, Integer.parseInt(arg));
 			} else if (typeName.equals("LocalDate")) {
-				field.set(object, arg.equals("null") ? null : LocalDate.parse(arg));
+				try {
+					field.set(object, arg.equals("null") ? null : LocalDate.parse(arg));
+				} catch (DateTimeParseException e) {
+					throw new DAOException(new InvalidFileDataException(INVALID_FILE_STRUCTURE_EXCEPTION_MESSAGE, e));
+				}
 			} else {
 				field.set(object, arg.equals("null") ? null : arg);
 			}
@@ -119,6 +121,7 @@ public class FileAirСompanyDAO implements AirCompanyDAO {
 	private List<Field> retrieveAllClassFieldsExcludingConstants(Class<?> objectClass) {
 		Field[] fields;
 		List<Field> result = new ArrayList<>();
+
 		if (objectClass == null) {
 			return result;
 		}
@@ -126,32 +129,36 @@ public class FileAirСompanyDAO implements AirCompanyDAO {
 		Class<?> superObject = objectClass.getSuperclass();
 		while (superObject != null) {
 			fields = superObject.getDeclaredFields();
-			for (Field field : fields) {
-				if (!(Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers()))) {
-					result.add(field);
-				}
-			}
+			addFieldsExcludingConstants(result, fields);
 			superObject = superObject.getSuperclass();
 		}
 
 		fields = objectClass.getDeclaredFields();
-		for (Field field : fields) {
-			if (!(Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers()))) {
-				result.add(field);
-			}
-		}
+		addFieldsExcludingConstants(result, fields);
+
 		return result;
 
 	}
 
+	private void addFieldsExcludingConstants(List<Field> list, Field[] fields) {
+		for (Field field : fields) {
+			if (!(Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers()))) {
+				list.add(field);
+			}
+		}
+	}
+
 	@Override
 	public void save(AirCompany company) throws DAOException {
+		if (ValidationHelper.isNull(company)) {
+			throw new DAOException("Null company can't be saved.");
+		}
 		List<Field> fields;
 		Aircraft aircraft;
 		Class<?> objectClass;
 
 		File file = fileProvider.getFile();
-		try (FileWriter writer = new FileWriter(file, true)) {
+		try (FileWriter writer = new FileWriter(file, false)) {
 			file.createNewFile();
 			objectClass = company.getClass();
 			writer.write(objectClass.getSimpleName() + "\n");

@@ -56,7 +56,7 @@ public class AirCompany extends LegalEntity {
 		if (!isIndexValid(index) || ValidationHelper.isNull(aircraft)) {
 			return false;
 		}
-		aircrafts.set(index, null);
+		aircrafts.set(index, aircraft);
 		return true;
 	}
 
@@ -73,7 +73,7 @@ public class AirCompany extends LegalEntity {
 		aircrafts.remove(aircraft);
 	}
 
-	public int retrieveAircraftsAmount() {
+	public int retrieveAircraftsCount() {
 		return aircrafts.size();
 	}
 
@@ -118,7 +118,7 @@ public class AirCompany extends LegalEntity {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " [aircrafts=" + aircrafts + "]";
+		return super.toString() + " [aircrafts=" + aircrafts + "]";
 	}
 
 }

@@ -1,0 +1,9 @@
+AirCompany
+registrationNumber=19834567
+countryOfRegistration=Belarus
+name=MinskTest
+registrationType=LLC
+legalAddress=RB, Minsk, Klary Tsetkin Street, 51A
+postAddress=null
+by.epamtc.sinitsyna.entity.Helicopter: type=Bell, fuelUsagePerHour=32, tankCapacity=840, currentFuelAmount=0, loadCapacity=1760, maxSpeed=238, crewAmount=1, maxPassengersAmount=14, maxUnitLoadDeviceAmount=0, inserviceDate=2019-01-31
+by.epamtc.sinitsyna.entity.Aircraft: type=Boeing, fuelUsagePerHour=2600, tankCapacity=26020, currentFuelAmount=13010, loadCapacity=20540, maxSpeed=880, crewAmount=2, maxPassengersAmount=189, maxUnitLoadDeviceAmount=200

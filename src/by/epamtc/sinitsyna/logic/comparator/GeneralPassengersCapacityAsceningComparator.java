@@ -8,11 +8,15 @@ package by.epamtc.sinitsyna.logic.comparator;
 import java.util.Comparator;
 
 import by.epamtc.sinitsyna.entity.Aircraft;
+import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class GeneralPassengersCapacityAsceningComparator implements Comparator<Aircraft> {
 
 	@Override
 	public int compare(Aircraft aircraft1, Aircraft aircraft2) {
+		if(ValidationHelper.isNull(aircraft1) || ValidationHelper.isNull(aircraft2)) {
+			return 0;
+		}
 		int passengers1 = aircraft1.getMaxPassengersAmount();
 		int passengers2 = aircraft2.getMaxPassengersAmount();
 		if (passengers1 > passengers2) {

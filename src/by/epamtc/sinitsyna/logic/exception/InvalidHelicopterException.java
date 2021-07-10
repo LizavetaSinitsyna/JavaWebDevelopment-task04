@@ -1,4 +1,4 @@
-package by.epamtc.sinitsyna.logic;
+package by.epamtc.sinitsyna.logic.exception;
 
 public class InvalidHelicopterException extends InvalidAircraftException {
 	private static final long serialVersionUID = 1L;

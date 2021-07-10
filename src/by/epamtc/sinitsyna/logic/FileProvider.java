@@ -1,11 +1,11 @@
-package by.epamtc.sinitsyna.dao;
+package by.epamtc.sinitsyna.logic;
 
 import java.io.File;
 
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class FileProvider {
-	private File file = new File("D:\\JAVA LEARNING\\epam\\JWD\\tasks\\aircompany.txt");
+	private File file = new File(".\\AirCompanyFiles\\AirCompany.txt");
 
 	private FileProvider() {
 	}

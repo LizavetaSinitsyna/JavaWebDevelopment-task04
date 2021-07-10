@@ -9,14 +9,21 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 import by.epamtc.sinitsyna.entity.Aircraft;
+import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class InserviceDateDescendingComparator implements Comparator<Aircraft> {
 
 	@Override
 	public int compare(Aircraft aircraft1, Aircraft aircraft2) {
+		if (ValidationHelper.isNull(aircraft1) || ValidationHelper.isNull(aircraft2)) {
+			return 0;
+		}
 		LocalDate inserviceDate1 = aircraft1.getInserviceDate();
 		LocalDate inserviceDate2 = aircraft2.getInserviceDate();
-		return inserviceDate1.compareTo(inserviceDate2);
+		if (ValidationHelper.isNull(inserviceDate1) || ValidationHelper.isNull(inserviceDate2)) {
+			return 0;
+		}
+		return inserviceDate2.compareTo(inserviceDate1);
 	}
 
 }

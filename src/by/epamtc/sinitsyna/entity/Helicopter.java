@@ -7,9 +7,7 @@ package by.epamtc.sinitsyna.entity;
 
 import java.time.LocalDate;
 
-import by.epamtc.sinitsyna.validation.ValidationHelper;
-
-public class Helicopter extends Aircraft implements Cloneable {
+public class Helicopter extends Aircraft {
 	private static final long serialVersionUID = 1L;
 
 	private int bladesAmount;
@@ -22,8 +20,8 @@ public class Helicopter extends Aircraft implements Cloneable {
 	}
 
 	public Helicopter(String type, int fuelUsagePerKm, int tankCapacity, int currentFuelAmount, int loadCapacity,
-			int maxSpeed, int bladesAmount, int crewAmount, int maxPassengersAmount, int maxUnitLoadDeviceAmount,
-			LocalDate inserviceDate) {
+			int maxSpeed, int crewAmount, int maxPassengersAmount, int maxUnitLoadDeviceAmount,
+			LocalDate inserviceDate, int bladesAmount) {
 		super(type, fuelUsagePerKm, tankCapacity, currentFuelAmount, loadCapacity, maxSpeed, crewAmount,
 				maxPassengersAmount, maxUnitLoadDeviceAmount, inserviceDate);
 		this.bladesAmount = bladesAmount;
@@ -33,12 +31,8 @@ public class Helicopter extends Aircraft implements Cloneable {
 		return bladesAmount;
 	}
 
-	public boolean setBladesAmount(int bladesAmount) {
-		if (ValidationHelper.isNegative(bladesAmount)) {
-			return false;
-		}
+	public void setBladesAmount(int bladesAmount) {
 		this.bladesAmount = bladesAmount;
-		return true;
 	}
 
 	@Override
@@ -65,7 +59,7 @@ public class Helicopter extends Aircraft implements Cloneable {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " [bladesAmount=" + bladesAmount + "]";
+		return super.toString() + " [bladesAmount=" + bladesAmount + "]";
 	}
 
 }

@@ -14,7 +14,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String type;
-	private int fuelUsagePerKm;
+	private int fuelUsagePerHour;
 	private int tankCapacity;
 	private int currentFuelAmount;
 	private int loadCapacity;
@@ -31,11 +31,11 @@ public class Aircraft implements FlyingMachine, Serializable {
 		this.type = type;
 	}
 
-	public Aircraft(String type, int fuelUsagePerKm, int tankCapacity, int currentFuelAmount, int loadCapacity,
+	public Aircraft(String type, int fuelUsagePerHour, int tankCapacity, int currentFuelAmount, int loadCapacity,
 			int maxSpeed, int crewAmount, int maxPassengersAmount, int maxUnitLoadDeviceAmount,
 			LocalDate inserviceDate) {
 		this.type = type;
-		this.fuelUsagePerKm = fuelUsagePerKm;
+		this.fuelUsagePerHour = fuelUsagePerHour;
 		this.tankCapacity = tankCapacity;
 		this.currentFuelAmount = currentFuelAmount;
 		this.loadCapacity = loadCapacity;
@@ -50,25 +50,16 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return type;
 	}
 
-	public boolean setType(String type) {
-		if (type == null) {
-			return false;
-		}
+	public void setType(String type) {
 		this.type = type;
-		return true;
 	}
 
-	public int getFuelUsagePerKm() {
-		return fuelUsagePerKm;
+	public int getFuelUsagePerHour() {
+		return fuelUsagePerHour;
 	}
 
-	public boolean setFuelUsagePerKm(int fuelUsagePerKm) {
-		if (ValidationHelper.isNegative(fuelUsagePerKm)) {
-			return false;
-		}
-		this.fuelUsagePerKm = fuelUsagePerKm;
-		return true;
-
+	public void setFuelUsagePerHour(int fuelUsagePerHour) {
+		this.fuelUsagePerHour = fuelUsagePerHour;
 	}
 
 	public int getTankCapacity() {
@@ -83,12 +74,8 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return currentFuelAmount;
 	}
 
-	public boolean setCurrentFuelAmount(int currentFuelAmount) {
-		if (ValidationHelper.isNegative(currentFuelAmount)) {
-			return false;
-		}
+	public void setCurrentFuelAmount(int currentFuelAmount) {
 		this.currentFuelAmount = currentFuelAmount;
-		return true;
 	}
 
 	public boolean addFuelAmount(int fuelToAdd) {
@@ -104,12 +91,8 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return loadCapacity;
 	}
 
-	public boolean setLoadCapacity(int loadCapacity) {
-		if (ValidationHelper.isNegative(loadCapacity)) {
-			return false;
-		}
+	public void setLoadCapacity(int loadCapacity) {
 		this.loadCapacity = loadCapacity;
-		return true;
 	}
 
 	@Override
@@ -117,36 +100,24 @@ public class Aircraft implements FlyingMachine, Serializable {
 		return maxSpeed;
 	}
 
-	public boolean setMaxSpeed(int maxSpeed) {
-		if (ValidationHelper.isNegative(maxSpeed)) {
-			return false;
-		}
+	public void setMaxSpeed(int maxSpeed) {
 		this.maxSpeed = maxSpeed;
-		return true;
 	}
 
 	public int getCrewAmount() {
 		return crewAmount;
 	}
 
-	public boolean setCrewAmount(int crewAmount) {
-		if (ValidationHelper.isNegative(crewAmount)) {
-			return false;
-		}
+	public void setCrewAmount(int crewAmount) {
 		this.crewAmount = crewAmount;
-		return true;
 	}
 
 	public int getMaxPassengersAmount() {
 		return maxPassengersAmount;
 	}
 
-	public boolean setMaxPassengersAmount(int maxPassengersAmount) {
-		if (ValidationHelper.isNegative(maxPassengersAmount)) {
-			return false;
-		}
+	public void setMaxPassengersAmount(int maxPassengersAmount) {
 		this.maxPassengersAmount = maxPassengersAmount;
-		return true;
 	}
 
 	public int getMaxUnitLoadDeviceAmount() {
@@ -171,7 +142,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 
 	@Override
 	public boolean executeFly(int distance) {
-		int requiredFuelAmount = distance * fuelUsagePerKm;
+		int requiredFuelAmount = distance * fuelUsagePerHour;
 		if (requiredFuelAmount < currentFuelAmount) {
 			return false;
 		}
@@ -185,7 +156,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 		int result = 1;
 		result = prime * result + crewAmount;
 		result = prime * result + currentFuelAmount;
-		result = prime * result + fuelUsagePerKm;
+		result = prime * result + fuelUsagePerHour;
 		result = prime * result + ((inserviceDate == null) ? 0 : inserviceDate.hashCode());
 		result = prime * result + loadCapacity;
 		result = prime * result + maxPassengersAmount;
@@ -209,7 +180,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 			return false;
 		if (currentFuelAmount != other.currentFuelAmount)
 			return false;
-		if (fuelUsagePerKm != other.fuelUsagePerKm)
+		if (fuelUsagePerHour != other.fuelUsagePerHour)
 			return false;
 		if (inserviceDate == null) {
 			if (other.inserviceDate != null)
@@ -236,7 +207,7 @@ public class Aircraft implements FlyingMachine, Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " [type=" + type + ", fuelUsagePerKm=" + fuelUsagePerKm + ", tankCapacity="
+		return getClass().getName() + " [type=" + type + ", fuelUsagePerHour=" + fuelUsagePerHour + ", tankCapacity="
 				+ tankCapacity + ", currentFuelAmount=" + currentFuelAmount + ", loadCapacity=" + loadCapacity
 				+ ", maxSpeed=" + maxSpeed + ", crewAmount=" + crewAmount + ", maxPassengersAmount="
 				+ maxPassengersAmount + ", maxUnitLoadDeviceAmount=" + maxUnitLoadDeviceAmount + ", inserviceDate="

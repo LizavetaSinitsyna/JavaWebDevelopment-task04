@@ -17,11 +17,11 @@ public final class DAOProvider {
 		return ProviderHelper.INSTANCE;
 	}
 
-	public AirCompanyDAO getLegalEntityDAO() {
+	public AirCompanyDAO getAirCompanyDAO() {
 		return airCompanyDAO;
 	}
 
-	public boolean setLegalEntityDAO(AirCompanyDAO airCompanyDAO) {
+	public boolean setAirCompanyDAO(AirCompanyDAO airCompanyDAO) {
 		if (ValidationHelper.isNull(airCompanyDAO)) {
 			return false;
 		}

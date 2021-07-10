@@ -16,36 +16,46 @@ import by.epamtc.sinitsyna.dao.DAOProvider;
 import by.epamtc.sinitsyna.entity.AirCompany;
 import by.epamtc.sinitsyna.entity.Aircraft;
 import by.epamtc.sinitsyna.exception.IndexOutOfBoundsException;
+import by.epamtc.sinitsyna.logic.exception.InvalidAirCompanyException;
 import by.epamtc.sinitsyna.logic.validator.AirCompanyValidator;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AirCompanyLogic {
+	private static final String NULL_AIR_COMPANY_EXCEPTION_MESSAGE = "AirCompany can't be null.";
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 
 	public AirCompany read() throws ServiceException {
 		AirCompany company = null;
 		AirCompanyValidator validator = new AirCompanyValidator();
 		try {
-			company = daoProvider.getLegalEntityDAO().read();
+			company = daoProvider.getAirCompanyDAO().read();
 
 			validator.validate(company);
 
-		} catch (DAOException | InvalidAirCompanyException e) { 
+		} catch (DAOException | InvalidAirCompanyException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
 
 		return company;
 	}
 
-	public BigInteger retrieveGeneralLoadCapacity(AirCompany company) {
-		BigInteger result = new BigInteger("0");
+	public void save(AirCompany company) throws ServiceException {
+		try {
+			daoProvider.getAirCompanyDAO().save(company);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getMessage(), e);
+		}
+
+	}
+
+	public BigInteger retrieveGeneralLoadCapacity(AirCompany company) throws ServiceException {
 		if (ValidationHelper.isNull(company)) {
-			return result;
+			throw new ServiceException(NULL_AIR_COMPANY_EXCEPTION_MESSAGE);
 		}
 
 		Aircraft aircraft;
-
 		Iterator<Aircraft> iterator = company.getAircraftsIterator();
+		BigInteger result = new BigInteger("0");
 
 		while (iterator.hasNext()) {
 			aircraft = iterator.next();
@@ -55,15 +65,14 @@ public class AirCompanyLogic {
 		return result;
 	}
 
-	public BigInteger retrieveGeneralPassengersCapacity(AirCompany company) {
-		BigInteger result = new BigInteger("0");
+	public BigInteger retrieveGeneralPassengersCapacity(AirCompany company) throws ServiceException {
 		if (ValidationHelper.isNull(company)) {
-			return result;
+			throw new ServiceException(NULL_AIR_COMPANY_EXCEPTION_MESSAGE);
 		}
 
 		Aircraft aircraft;
-
 		Iterator<Aircraft> iterator = company.getAircraftsIterator();
+		BigInteger result = new BigInteger("0");
 
 		while (iterator.hasNext()) {
 			aircraft = iterator.next();
@@ -77,11 +86,11 @@ public class AirCompanyLogic {
 		if (ValidationHelper.isNull(company) || ValidationHelper.isNull(comparator)) {
 			return;
 		}
-		int size = company.retrieveAircraftsAmount();
+		int size = company.retrieveAircraftsCount();
 		for (int i = 0; i < size - 1; ++i) {
 			for (int j = 0; j < size - i - 1; ++j) {
 				try {
-					if (comparator.compare(company.get(j), company.get(j + 1)) == 1) {
+					if (comparator.compare(company.get(j), company.get(j + 1)) > 0) {
 						swap(company, j, j + 1);
 					}
 				} catch (IndexOutOfBoundsException e) {
@@ -104,12 +113,13 @@ public class AirCompanyLogic {
 
 	}
 
-	public List<Aircraft> retrieveAircraftsByFuelUsage(AirCompany company, int bound1, int bound2) {
-		List<Aircraft> result = new ArrayList<Aircraft>();
+	public List<Aircraft> retrieveAircraftsByFuelUsage(AirCompany company, int bound1, int bound2)
+			throws ServiceException {
 		if (ValidationHelper.isNull(company)) {
-			return result;
+			throw new ServiceException(NULL_AIR_COMPANY_EXCEPTION_MESSAGE);
 		}
 
+		List<Aircraft> result = new ArrayList<Aircraft>();
 		Aircraft aircraft;
 		int fuelUsagePerKm;
 
@@ -123,7 +133,7 @@ public class AirCompanyLogic {
 
 		while (iterator.hasNext()) {
 			aircraft = iterator.next();
-			fuelUsagePerKm = aircraft.getFuelUsagePerKm();
+			fuelUsagePerKm = aircraft.getFuelUsagePerHour();
 
 			if (fuelUsagePerKm >= bound1 && fuelUsagePerKm <= bound2)
 				result.add(aircraft);
