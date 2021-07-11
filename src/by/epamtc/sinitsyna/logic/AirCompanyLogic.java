@@ -30,7 +30,9 @@ public class AirCompanyLogic {
 		try {
 			company = daoProvider.getAirCompanyDAO().read();
 
-			validator.validate(company);
+			if (!validator.isValid(company)) {
+				throw new ServiceException(new InvalidAirCompanyException(validator.getExceptionMessage()));
+			}
 
 		} catch (DAOException | InvalidAirCompanyException e) {
 			throw new ServiceException(e.getMessage(), e);

@@ -6,49 +6,65 @@ import by.epamtc.sinitsyna.logic.exception.InvalidAircraftException;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AircraftValidator implements FlyingMachineValidator {
+	private String exceptionMessage;
 
 	@Override
-	public void validate(FlyingMachine flyingMachine) throws InvalidAircraftException {
+	public boolean isValid(FlyingMachine flyingMachine) throws InvalidAircraftException {
 		if (ValidationHelper.isNull(flyingMachine)) {
-			throw new InvalidAircraftException("FlyingMachine can't be null.");
+			exceptionMessage = "FlyingMachine can't be null.";
+			return false;
 		}
 		if (!(flyingMachine instanceof Aircraft)) {
 			throw new InvalidAircraftException("Passed FlyingMachine must belong to Aircraft.class.");
 		}
 		Aircraft aircraft = (Aircraft) flyingMachine;
 		if (ValidationHelper.isNull(aircraft.getType())) {
-			throw new InvalidAircraftException("Type of aircraft must be specified.");
+			exceptionMessage = "Type of aircraft must be specified.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getFuelUsagePerHour())) {
-			throw new InvalidAircraftException("Fuel usage per hour can't be negative.");
+			exceptionMessage = "Fuel usage per hour can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getTankCapacity())) {
-			throw new InvalidAircraftException("Tank capacity can't be negative.");
+			exceptionMessage = "Tank capacity can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getCurrentFuelAmount())) {
-			throw new InvalidAircraftException("Current fuel amount can't be negative.");
+			exceptionMessage = "Current fuel amount can't be negative.";
+			return false;
 		}
 		if (aircraft.getCurrentFuelAmount() > aircraft.getTankCapacity()) {
-			throw new InvalidAircraftException("Current fuel amount can't be larger than tank capacity.");
+			exceptionMessage = "Current fuel amount can't be larger than tank capacity.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getLoadCapacity())) {
-			throw new InvalidAircraftException("Load capacity can't be negative.");
+			exceptionMessage = "Load capacity can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getMaxSpeed())) {
-			throw new InvalidAircraftException("Max speed can't be negative.");
+			exceptionMessage = "Max speed can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getCrewAmount())) {
-			throw new InvalidAircraftException("Crew amount can't be negative.");
+			exceptionMessage = "Crew amount can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getMaxPassengersAmount())) {
-			throw new InvalidAircraftException("Max passengers amount can't be negative.");
+			exceptionMessage = "Max passengers amount can't be negative.";
+			return false;
 		}
 		if (ValidationHelper.isNegative(aircraft.getMaxUnitLoadDeviceAmount())) {
-			throw new InvalidAircraftException("Max unit load device amount can't be negative.");
+			exceptionMessage = "Max unit load device amount can't be negative.";
+			return false;
 		}
 
-		// can be any date
-		// aircraft.getInserviceDate();
+		return true;
+	}
+
+	@Override
+	public String getExceptionMessage() {
+		return exceptionMessage;
 	}
 
 }

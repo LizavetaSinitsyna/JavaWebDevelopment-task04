@@ -4,5 +4,6 @@ import by.epamtc.sinitsyna.entity.FlyingMachine;
 import by.epamtc.sinitsyna.logic.exception.InvalidFlyingMachineException;
 
 public interface FlyingMachineValidator {
-	void validate(FlyingMachine flyingMachine) throws InvalidFlyingMachineException;
+	boolean isValid(FlyingMachine flyingMachine) throws InvalidFlyingMachineException;
+	String getExceptionMessage();
 }

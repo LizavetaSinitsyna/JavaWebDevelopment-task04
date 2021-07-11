@@ -59,8 +59,14 @@ public class AirCompanyLogicTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void testReadWhenPassingFileWithInvalidData() throws ServiceException {
+	public void testReadWhenPassingFileWithInvalidDataForDAO() throws ServiceException {
 		FileProvider.getInstance().setFile(new File(".\\test\\resource\\InvalidAirCompanyForTestRead.txt"));
+		logic.read();
+	}
+
+	@Test(expected = ServiceException.class)
+	public void testReadWhenPassingFileWithInvalidParameterValue() throws ServiceException {
+		FileProvider.getInstance().setFile(new File(".\\test\\resource\\AirCompanyWithInvalidParameterValueForTestLogicRead.txt"));
 		logic.read();
 	}
 
@@ -169,7 +175,7 @@ public class AirCompanyLogicTest {
 	public void testRetrieveAircraftsByFuelUsageByPassingNullCompany() throws ServiceException {
 		logic.retrieveAircraftsByFuelUsage(null, 0, 100);
 	}
-	
+
 	@Test
 	public void testRetrieveAircraftsByFuelUsageWhenFirstBorderIsLargerThanSecond() throws ServiceException {
 		List<Aircraft> expected = new ArrayList<>();

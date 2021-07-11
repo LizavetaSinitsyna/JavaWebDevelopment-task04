@@ -11,6 +11,7 @@ import by.epamtc.sinitsyna.logic.exception.InvalidFlyingMachineException;
 import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class AirCompanyValidator {
+	private String exceptionMessage;
 	private Map<String, FlyingMachineValidator> validators = new HashMap<>();
 
 	{
@@ -18,17 +19,31 @@ public class AirCompanyValidator {
 		validators.put("Helicopter", new HelicopterValidator());
 	}
 
-	public void validate(AirCompany company) throws InvalidAirCompanyException {
+	public boolean isValid(AirCompany company) throws InvalidAirCompanyException {
 		if (ValidationHelper.isNull(company)) {
-			throw new InvalidAirCompanyException("Company can't be null.");
+			exceptionMessage = "Company can't be null.";
+			return false;
 		}
+
 		List<Aircraft> aircrafts = company.getAircrafts();
+		FlyingMachineValidator validator;
+		
 		for (Aircraft entry : aircrafts) {
 			try {
-				validators.get(entry.getClass().getSimpleName()).validate(entry);
+				validator = validators.get(entry.getClass().getSimpleName());
+				if(!validator.isValid(entry)) {
+					exceptionMessage = validator.getExceptionMessage();
+					return false;
+				}
+				
 			} catch (InvalidFlyingMachineException e) {
 				throw new InvalidAirCompanyException(e.getMessage(), e);
 			}
 		}
+		return true;
+	}
+	
+	public String getExceptionMessage() {
+		return exceptionMessage;
 	}
 }
